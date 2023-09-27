@@ -1,0 +1,1 @@
+const OMDbUrl = "http://www.omdbapi.com/"
