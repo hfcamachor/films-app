@@ -17,7 +17,6 @@ app.get("/films", async(req, res) => {
       res.send(response.statusText);
     }
     const data = await response.json();
-    console.log(data)
     res.send(data);
   } catch (error) {
     console.log(error)

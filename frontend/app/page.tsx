@@ -3,17 +3,16 @@
 import styles from "./page.module.css";
 import { AutoComplete } from "./components/AutoComplete";
 import { Dispatch, SetStateAction, useState } from "react";
-
+import { Films } from "./types/types";
 
 export default function Home() {
-  const [films, setFilms] = useState();
-  const OMDB_API_KEY = process.env.OMDB_API_KEY;
+  const [films, setFilms] = useState<Films[]>([]);
 
   const fetchFilmsData = async (
     inputValue: string,
     setInputValue: Dispatch<SetStateAction<string>>
   ) => {
-
+    console.log("inputValue", inputValue)
     if (!!inputValue) {
       try {
         const response = await fetch(
@@ -29,7 +28,7 @@ export default function Home() {
   const searchClick = () => {};
   const autoCompleteClick = () => {};
 
-  console.log("OMDB_URL", films)
+  // console.log("films", films);
 
   return (
     <main className={styles.main}>
@@ -38,7 +37,7 @@ export default function Home() {
           onInputValue={fetchFilmsData}
           onSearchClick={searchClick}
           onAutoCompleteClick={autoCompleteClick}
-          options={{}}
+          options={films || []}
         />
       </div>
     </main>
