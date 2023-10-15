@@ -52,10 +52,17 @@ export const AutoComplete = ({
             freeSolo
             id="free-solo-2-demo"
             disableClearable
-            options={!inputValue ? [] : options.map((option) => option.Title)}
+            options={!inputValue ? [] : options.map((option) => `${option.Title} (${option.Year})`)}
             onChange={(e, value) => setSearchedFilm(value)}
             filterOptions={(x) => x}
             loading={!!inputValue && isLoadingSuggestions}
+            renderOption={(props, option) => {
+              return (
+                <li {...props} key={option}>
+                  {option}
+                </li>
+              );
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
