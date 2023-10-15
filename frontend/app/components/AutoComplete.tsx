@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "./autocomple.module.css";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Films } from "../types/types";
 
 interface AutoCompleteProps {
@@ -9,78 +9,71 @@ interface AutoCompleteProps {
     setInputValue: Dispatch<SetStateAction<string>>
   ) => void;
   options: Films[];
-  onSearchClick: (inputValue: string) => void;
-  onAutoCompleteClick: (id: number) => void;
+  onAddClick: (inputValue: string) => void;
+  isLoadingSuggestions: boolean;
 }
-
-type SearchedWords = {
-  [key: string]: {};
-};
 
 export const AutoComplete = ({
   onInputValue,
   options,
-  onSearchClick,
-  onAutoCompleteClick,
+  onAddClick,
+  isLoadingSuggestions,
 }: AutoCompleteProps) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [searchedWords, setSearchedWords] = useState<SearchedWords>({});
+  const [searchedFilm, setSearchedFilm] = useState<string>("");
 
   useEffect(() => {
     onInputValue(inputValue, setInputValue);
   }, [inputValue]);
 
-  const filterValues = () => {
-    const listToShow = Object.values(options).filter((elem) => {
-      const elemName = elem.name.toLowerCase();
-      const inputValueToCheck = inputValue.toLowerCase();
-      if (elemName.startsWith(inputValueToCheck)) {
-        return elem;
-      }
-    });
-
-    return listToShow.slice(0, 10);
-  };
-
-  const renderSuggestions = () => {
-    return (
-      <div className={styles.suggestions}>
-        <ul className={styles.suggestionsList}>
-          {Object.values(filterValues()).map((elem, index) => {
-            return (
-              <li key={index}>
-                <button
-                  className={styles.suggestionButton}
-                  onClick={() => onAutoCompleteClick(elem.id)}
-                >
-                  {elem.name}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
+  const addFilm = () => {
+    if (!!searchedFilm) {
+      onAddClick(searchedFilm);
+      setSearchedFilm("");
+    }
   };
 
   return (
-    <Autocomplete
-      freeSolo
-      id="free-solo-2-demo"
-      disableClearable
-      options={options.map((option) => option.Title)}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Search input"
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-          InputProps={{
-            ...params.InputProps,
-            type: "search",
-          }}
-        />
-      )}
-    />
+    <Box
+      sx={{
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          maxWidth: "500px",
+          display: "flex",
+          gap: "10px",
+          margin: "auto",
+        }}
+      >
+        <Box sx={{ width: "100%" }}>
+          <Autocomplete
+            freeSolo
+            id="free-solo-2-demo"
+            disableClearable
+            options={!inputValue ? [] : options.map((option) => option.Title)}
+            onChange={(e, value) => setSearchedFilm(value)}
+            filterOptions={(x) => x}
+            loading={!!inputValue && isLoadingSuggestions}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search input"
+                onChange={(e) => setInputValue(e.target.value)}
+                value={inputValue}
+                InputProps={{
+                  ...params.InputProps,
+                  type: "search",
+                }}
+              />
+            )}
+          />
+        </Box>
+        <Button disabled={options.length < 1} variant="contained" onClick={() => addFilm()}>
+          Add
+        </Button>
+      </Box>
+    </Box>
   );
 };

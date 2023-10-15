@@ -12,7 +12,21 @@ const API_KEY = process.env.OMDB_API_KEY;
 app.get("/films", async(req, res) => {
   const searchInput = req.query.search;
   try {
-    const response = await fetch(`${OMDB_URL}${searchInput}${API_KEY}`);
+    const response = await fetch(`${OMDB_URL}/?s=${searchInput}${API_KEY}`);
+    if(!response.ok) {
+      res.send(response.statusText);
+    }
+    const data = await response.json();
+    res.send(data);
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+app.get("/filmbytitle", async(req, res) => {
+  const searchInput = req.query.search;
+  try {
+    const response = await fetch(`${OMDB_URL}/?t=${searchInput}${API_KEY}`);
     if(!response.ok) {
       res.send(response.statusText);
     }
@@ -26,5 +40,3 @@ app.get("/films", async(req, res) => {
 app.listen(PORT, () => {
   console.log("Listen on port 8000");
 });
-
-const OMDbUrl = "http://www.omdbapi.com/";
