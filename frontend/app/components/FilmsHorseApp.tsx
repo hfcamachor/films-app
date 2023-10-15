@@ -1,10 +1,11 @@
 import { AutoComplete } from "./AutoComplete";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function FilmsHorseApp() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filmName, setFilmName] = useState("");
+  const [filmsList, setFilmsList] = useState({});
 
   const { data: suggestions, isLoading } = useQuery(
     ["suggestions", searchTerm],
@@ -22,22 +23,21 @@ export default function FilmsHorseApp() {
     }
   );
 
+  useEffect(() => {
+    const films = {...filmsList}
+    setFilmsList({})
+  }, [filmInfo])
+
   const onInputValue = async (inputValue: string) => {
     setSearchTerm(inputValue);
   };
 
   const fetchFilmsData = async (inputValue: string) => {
-    if (!!inputValue) {
-      try {
-        const response = await fetch(
-          `http://localhost:8000/films?search=${inputValue}`
-        );
-        const data = await response.json();
-        return data.Search || [];
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const response = await fetch(
+      `http://localhost:8000/films?search=${inputValue}`
+    );
+    const data = await response.json();
+    return data.Search || [];
   };
 
   const onAddClick = async (filmName: string) => {
@@ -45,17 +45,11 @@ export default function FilmsHorseApp() {
   };
 
   const fetchFilmInfo = async (filmName: string) => {
-    if (!!filmName) {
-      try {
-        const response = await fetch(
-          `http://localhost:8000/filmbytitle?search=${filmName}`
-        );
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    const response = await fetch(
+      `http://localhost:8000/filmbytitle?search=${filmName}`
+    );
+    const data = await response.json();
+    return data;
   };
 
   console.log("filmInfo", filmInfo);
