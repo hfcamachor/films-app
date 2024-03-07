@@ -41,3 +41,5 @@
 /frontend/package-lock
 /backend/yarn.lock
 /backend/package-lock
+
+.DS_Store

@@ -52,14 +52,24 @@ export const AutoComplete = ({
             freeSolo
             id="free-solo-2-demo"
             disableClearable
-            options={!inputValue ? [] : options.map((option) => `${option.Title} (${option.Year})`)}
-            onChange={(e, value) => setSearchedFilm(value)}
+            options={
+              !inputValue
+                ? []
+                : options.map((option) => {
+                    return {
+                      label: option.Title,
+                      imdbID: option.imdbID,
+                      year: option.Year
+                    };
+                  })
+            }
+            onChange={(e, value: any) => setSearchedFilm(value.imdbID)}
             filterOptions={(x) => x}
             loading={!!inputValue && isLoadingSuggestions}
             renderOption={(props, option) => {
               return (
-                <li {...props} key={option}>
-                  {option}
+                <li {...props} key={option.imdbID}>
+                  {option.label} {option.year}
                 </li>
               );
             }}
@@ -77,7 +87,11 @@ export const AutoComplete = ({
             )}
           />
         </Box>
-        <Button disabled={options.length < 1} variant="contained" onClick={() => addFilm()}>
+        <Button
+          disabled={options.length < 1}
+          variant="contained"
+          onClick={() => addFilm()}
+        >
           Add
         </Button>
       </Box>

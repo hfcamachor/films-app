@@ -52,8 +52,6 @@ export default function FilmsHorseApp() {
     return data;
   };
 
-  console.log("filmInfo", filmInfo);
-
   return (
     <AutoComplete
       onInputValue={onInputValue}

@@ -26,7 +26,7 @@ app.get("/films", async(req, res) => {
 app.get("/filmbytitle", async(req, res) => {
   const searchInput = req.query.search;
   try {
-    const response = await fetch(`${OMDB_URL}/?t=${searchInput}${API_KEY}`);
+    const response = await fetch(`${OMDB_URL}/?i=${searchInput}${API_KEY}`);
     if(!response.ok) {
       res.send(response.statusText);
     }
