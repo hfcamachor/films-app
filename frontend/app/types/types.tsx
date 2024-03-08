@@ -3,3 +3,8 @@ export interface Films {
   Year: string;
   imdbID: string;
 }
+
+export interface FilmsList {
+  Poster: string;
+  imdbRating: string;
+}

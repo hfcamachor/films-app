@@ -1,11 +1,16 @@
 import { AutoComplete } from "./AutoComplete";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import ImageGraph from "./ImageGraph";
+import { FilmsList } from "../types/types";
+import AppSnackbar from "./AppSnackbar";
 
 export default function FilmsHorseApp() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filmName, setFilmName] = useState("");
-  const [filmsList, setFilmsList] = useState({});
+  const [filmsList, setFilmsList] = useState<FilmsList[]>([]);
+  const [open, setOpen] = useState(false);
+  const [addSuccess, setAddSuccess] = useState(false);
 
   const { data: suggestions, isLoading } = useQuery(
     ["suggestions", searchTerm],
@@ -24,9 +29,11 @@ export default function FilmsHorseApp() {
   );
 
   useEffect(() => {
-    const films = {...filmsList}
-    setFilmsList({})
-  }, [filmInfo])
+    if (!!filmInfo) {
+      const films = [...filmsList, filmInfo];
+      setFilmsList(films);
+    }
+  }, [filmInfo]);
 
   const onInputValue = async (inputValue: string) => {
     setSearchTerm(inputValue);
@@ -52,12 +59,39 @@ export default function FilmsHorseApp() {
     return data;
   };
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+  console.log("open", open);
+
   return (
-    <AutoComplete
-      onInputValue={onInputValue}
-      onAddClick={onAddClick}
-      options={suggestions || []}
-      isLoadingSuggestions={isLoading}
-    />
+    <div>
+      <AutoComplete
+        onInputValue={onInputValue}
+        onAddClick={onAddClick}
+        options={suggestions || []}
+        isLoadingSuggestions={isLoading}
+      />
+      <ImageGraph films={filmsList} />
+      <AppSnackbar open={open} setOpen={setOpen} success={addSuccess} />
+      <button
+        type="button"
+        onClick={() => {
+          handleClick();
+          setAddSuccess(true);
+        }}
+      >
+        Open snackbar success
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          handleClick();
+          setAddSuccess(false);
+        }}
+      >
+        Open snackbar error
+      </button>
+    </div>
   );
 }

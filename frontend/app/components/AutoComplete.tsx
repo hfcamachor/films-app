@@ -12,7 +12,6 @@ interface AutoCompleteProps {
   onAddClick: (inputValue: string) => void;
   isLoadingSuggestions: boolean;
 }
-
 export const AutoComplete = ({
   onInputValue,
   options,
@@ -24,11 +23,17 @@ export const AutoComplete = ({
 
   useEffect(() => {
     onInputValue(inputValue, setInputValue);
-  }, [inputValue]);
+    if (options.length) {
+      setSearchedFilm("");
+    }
+  }, [inputValue, options]);
+
+  console.log("searchedFilm", searchedFilm)
 
   const addFilm = () => {
     if (!!searchedFilm) {
       onAddClick(searchedFilm);
+      setInputValue("");
       setSearchedFilm("");
     }
   };
@@ -59,10 +64,11 @@ export const AutoComplete = ({
                     return {
                       label: option.Title,
                       imdbID: option.imdbID,
-                      year: option.Year
+                      year: option.Year,
                     };
                   })
             }
+            value={inputValue}
             onChange={(e, value: any) => setSearchedFilm(value.imdbID)}
             filterOptions={(x) => x}
             loading={!!inputValue && isLoadingSuggestions}
@@ -88,7 +94,7 @@ export const AutoComplete = ({
           />
         </Box>
         <Button
-          disabled={options.length < 1}
+          disabled={options.length < 1 || !searchedFilm}
           variant="contained"
           onClick={() => addFilm()}
         >
