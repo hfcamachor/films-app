@@ -6,17 +6,22 @@ import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { Snackbar } from "@mui/base/Snackbar";
 import { styled } from "@mui/system";
 import { SnackbarCloseReason } from "@mui/base/useSnackbar";
+import styles from "./AppSnackbar.module.scss";
 
 interface AppSnackbarProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   success: boolean;
+  title: string;
+  subTitle: string;
 }
 
 export default function AppSnackbar({
   open,
   setOpen,
   success,
+  title = "",
+  subTitle = ""
 }: AppSnackbarProps) {
   const nodeRef = useRef(null);
   const [exited, setExited] = useState(true);
@@ -151,6 +156,7 @@ export default function AppSnackbar({
               transform: positioningStyles[status],
               transition: "transform 300ms ease",
             }}
+            className={success ? "" : styles.snackbarWarning}
             ref={nodeRef}
           >
             {success ? (
@@ -173,9 +179,9 @@ export default function AppSnackbar({
               />
             )}
             <div className="snackbar-message">
-              <p className="snackbar-title">Notifications sent</p>
+              <p className="snackbar-title">{title}</p>
               <p className="snackbar-description">
-                Everything was sent to the desired address.
+                {subTitle}
               </p>
             </div>
             <CloseIcon onClick={() => handleClose()} />

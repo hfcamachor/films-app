@@ -1,9 +1,9 @@
 import { AutoComplete } from "./AutoComplete";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ImageGraph from "./ImageGraph";
-import { FilmsList } from "../types/types";
-import AppSnackbar from "./AppSnackbar";
+import { FilmsList, Films } from "../types/types";
+import AppSnackbar from "./AppSnackbar/AppSnackbar";
 
 export default function FilmsHorseApp() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,7 +29,7 @@ export default function FilmsHorseApp() {
   );
 
   useEffect(() => {
-    if (!!filmInfo) {
+    if (!!filmInfo && filmInfo.imdbRating !== "N/A") {
       const films = [...filmsList, filmInfo];
       setFilmsList(films);
     }
@@ -44,11 +44,12 @@ export default function FilmsHorseApp() {
       `http://localhost:8000/films?search=${inputValue}`
     );
     const data = await response.json();
+
     return data.Search || [];
   };
 
-  const onAddClick = async (filmName: string) => {
-    setFilmName(filmName);
+  const onAddClick = async (film: Films) => {
+    setFilmName(film.imdbID);
   };
 
   const fetchFilmInfo = async (filmName: string) => {
@@ -56,13 +57,16 @@ export default function FilmsHorseApp() {
       `http://localhost:8000/filmbytitle?search=${filmName}`
     );
     const data = await response.json();
+
     return data;
   };
 
-  const handleClick = () => {
-    setOpen(true);
-  };
-  console.log("open", open);
+  useEffect(() => {
+    if(filmInfo) {
+      setOpen(true);
+      setAddSuccess(filmInfo.imdbRating !== "N/A")
+    }
+  }, [filmInfo]);
 
   return (
     <div>
@@ -73,25 +77,13 @@ export default function FilmsHorseApp() {
         isLoadingSuggestions={isLoading}
       />
       <ImageGraph films={filmsList} />
-      <AppSnackbar open={open} setOpen={setOpen} success={addSuccess} />
-      <button
-        type="button"
-        onClick={() => {
-          handleClick();
-          setAddSuccess(true);
-        }}
-      >
-        Open snackbar success
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          handleClick();
-          setAddSuccess(false);
-        }}
-      >
-        Open snackbar error
-      </button>
+      <AppSnackbar
+        open={open}
+        setOpen={setOpen}
+        success={addSuccess}
+        title="default title"
+        subTitle="default subtitle"
+      />
     </div>
   );
 }

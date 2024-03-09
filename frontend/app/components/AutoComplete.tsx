@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import styles from "./autocomple.module.css";
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Films } from "../types/types";
 
@@ -9,7 +8,7 @@ interface AutoCompleteProps {
     setInputValue: Dispatch<SetStateAction<string>>
   ) => void;
   options: Films[];
-  onAddClick: (inputValue: string) => void;
+  onAddClick: (inputValue: Films) => void;
   isLoadingSuggestions: boolean;
 }
 export const AutoComplete = ({
@@ -19,22 +18,20 @@ export const AutoComplete = ({
   isLoadingSuggestions,
 }: AutoCompleteProps) => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [searchedFilm, setSearchedFilm] = useState<string>("");
+  const [searchedFilm, setSearchedFilm] = useState<Films | null>(null);
 
   useEffect(() => {
     onInputValue(inputValue, setInputValue);
     if (options.length) {
-      setSearchedFilm("");
+      setSearchedFilm(null);
     }
   }, [inputValue, options]);
 
-  console.log("searchedFilm", searchedFilm)
-
   const addFilm = () => {
-    if (!!searchedFilm) {
+    if (!!searchedFilm?.imdbID) {
       onAddClick(searchedFilm);
       setInputValue("");
-      setSearchedFilm("");
+      setSearchedFilm(null);
     }
   };
 
@@ -69,7 +66,7 @@ export const AutoComplete = ({
                   })
             }
             value={inputValue}
-            onChange={(e, value: any) => setSearchedFilm(value.imdbID)}
+            onChange={(e, value: any) => setSearchedFilm(value)}
             filterOptions={(x) => x}
             loading={!!inputValue && isLoadingSuggestions}
             renderOption={(props, option) => {
