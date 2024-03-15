@@ -1,7 +1,7 @@
 import { AutoComplete } from "./AutoComplete";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ImageGraph from "./ImageGraph";
+import ImageGraph from "./ImageGraph/ImageGraph";
 import { FilmsList, Films } from "../types/types";
 import AppSnackbar from "./AppSnackbar/AppSnackbar";
 
