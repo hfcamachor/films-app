@@ -9,31 +9,38 @@ app.use(cors());
 const OMDB_URL = process.env.OMDB_URL;
 const API_KEY = process.env.OMDB_API_KEY;
 
-app.get("/films", async(req, res) => {
+app.get("/films", async (req, res) => {
   const searchInput = req.query.search;
   try {
     const response = await fetch(`${OMDB_URL}/?s=${searchInput}${API_KEY}`);
-    if(!response.ok) {
+    if (!response.ok) {
       res.send(response.statusText);
     }
     const data = await response.json();
-    res.send(data);
+    if (!data.Search) {
+      res.status(404).send("No films found");
+      return;
+    }
+    const filmsWithPoster = data.Search.filter((film) => film.Poster);
+
+    res.send(filmsWithPoster);
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-app.get("/filmbytitle", async(req, res) => {
+app.get("/filmbytitle", async (req, res) => {
   const searchInput = req.query.search;
   try {
     const response = await fetch(`${OMDB_URL}/?i=${searchInput}${API_KEY}`);
-    if(!response.ok) {
+    if (!response.ok) {
       res.send(response.statusText);
     }
     const data = await response.json();
     res.send(data);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 

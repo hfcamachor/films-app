@@ -1,0 +1,15 @@
+.filmsPosters {
+  display: flex;
+  margin-top: 40px;
+  align-items: flex-end;
+}
+
+.filmsPoster {
+  width: 100%;
+  text-align: center;
+
+  &Container {
+    max-width: 60px;
+    margin: auto;
+  }
+}

@@ -45,7 +45,7 @@ export default function FilmsHorseApp() {
     );
     const data = await response.json();
 
-    return data.Search || [];
+    return data || [];
   };
 
   const onAddClick = async (film: Films) => {
@@ -62,9 +62,9 @@ export default function FilmsHorseApp() {
   };
 
   useEffect(() => {
-    if(filmInfo) {
+    if (filmInfo) {
       setOpen(true);
-      setAddSuccess(filmInfo.imdbRating !== "N/A")
+      setAddSuccess(filmInfo.imdbRating !== "N/A");
     }
   }, [filmInfo]);
 

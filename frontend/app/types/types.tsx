@@ -7,4 +7,6 @@ export interface Films {
 export interface FilmsList {
   Poster: string;
   imdbRating: string;
+  Title: string;
+  Year: string;
 }
