@@ -24,7 +24,6 @@ const posters = (films: FilmsList[]) => {
         style={{ backgroundPositionX: backgroundPositionX }}
         key={index}
       >
-        {imdbRatingRound}
       </div>
     );
   });
