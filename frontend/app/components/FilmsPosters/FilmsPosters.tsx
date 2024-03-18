@@ -11,8 +11,8 @@ export default function FilmsPosters({ films }: ImageGraphProps) {
     return films.map((film, index) => {
       return (
         <div className={styles.filmsPoster} key={index}>
-          <div>{film.Title}</div>
-          <div>{film.Year}</div>
+          <div className={styles.filmsPosterTitle}>{film.Title}</div>
+          <div className={styles.filmsPosterYear}>{film.Year}</div>
           <div className={styles.filmsPosterContainer}>
             {film.Poster !== "N/A" && (
               <Image
@@ -24,7 +24,7 @@ export default function FilmsPosters({ films }: ImageGraphProps) {
               />
             )}
           </div>
-          <div>{film.imdbRating}</div>
+          <div className={styles.filmsPosterScore}>{film.imdbRating}</div>
         </div>
       );
     });

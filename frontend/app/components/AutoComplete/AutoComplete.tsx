@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Autocomplete, Box, Button, TextField } from "@mui/material";
-import { Films } from "../types/types";
+import { Films } from "../../types/types";
 
 interface AutoCompleteProps {
   onInputValue: (
@@ -78,6 +78,7 @@ export const AutoComplete = ({
             }}
             renderInput={(params) => (
               <TextField
+                className=""
                 {...params}
                 label="Search input"
                 onChange={(e) => setInputValue(e.target.value)}

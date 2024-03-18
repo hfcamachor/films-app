@@ -1,9 +1,10 @@
-import { AutoComplete } from "./AutoComplete";
+import { AutoComplete } from "./AutoComplete/AutoComplete";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ImageGraph from "./ImageGraph/ImageGraph";
 import { FilmsList, Films } from "../types/types";
 import AppSnackbar from "./AppSnackbar/AppSnackbar";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 export default function FilmsHorseApp() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +12,12 @@ export default function FilmsHorseApp() {
   const [filmsList, setFilmsList] = useState<FilmsList[]>([]);
   const [open, setOpen] = useState(false);
   const [addSuccess, setAddSuccess] = useState(false);
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
   const { data: suggestions, isLoading } = useQuery(
     ["suggestions", searchTerm],
@@ -69,7 +76,7 @@ export default function FilmsHorseApp() {
   }, [filmInfo]);
 
   return (
-    <div>
+    <ThemeProvider theme={darkTheme}>
       <AutoComplete
         onInputValue={onInputValue}
         onAddClick={onAddClick}
@@ -84,6 +91,6 @@ export default function FilmsHorseApp() {
         title="default title"
         subTitle="default subtitle"
       />
-    </div>
+    </ThemeProvider>
   );
 }

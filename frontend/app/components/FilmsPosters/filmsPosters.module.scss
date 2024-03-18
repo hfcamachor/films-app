@@ -7,6 +7,24 @@
 .filmsPoster {
   width: 100%;
   text-align: center;
+  font-size: 12px;
+
+  &Title {
+    color: rgb(225, 225, 201);
+  }
+
+  &Year {
+    color: rgb(225, 225, 201);
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  &Score {
+    color: rgb(220, 220, 21);
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 14px;
+  }
 
   &Container {
     max-width: 60px;
