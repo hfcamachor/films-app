@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.scss";
-import FilmsHorseApp from "./components/FilmsHorseApp";
+import FilmsHorseApp from "./components/FilmsHorseApp/FilmsHorseApp";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "@fontsource/roboto/300.css";

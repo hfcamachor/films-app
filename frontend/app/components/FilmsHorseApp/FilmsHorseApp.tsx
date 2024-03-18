@@ -1,10 +1,12 @@
-import { AutoComplete } from "./AutoComplete/AutoComplete";
+import { AutoComplete } from "../AutoComplete/AutoComplete";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import ImageGraph from "./ImageGraph/ImageGraph";
-import { FilmsList, Films } from "../types/types";
-import AppSnackbar from "./AppSnackbar/AppSnackbar";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import ImageGraph from "../ImageGraph/ImageGraph";
+import { FilmsList, Films } from "../../types/types";
+import AppSnackbar from "../AppSnackbar/AppSnackbar";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import styles from "./filmsHorseApp.module.scss";
+import Image from "next/image";
 
 export default function FilmsHorseApp() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +17,7 @@ export default function FilmsHorseApp() {
 
   const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
+      mode: "dark",
     },
   });
 
@@ -77,20 +79,31 @@ export default function FilmsHorseApp() {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <AutoComplete
-        onInputValue={onInputValue}
-        onAddClick={onAddClick}
-        options={suggestions || []}
-        isLoadingSuggestions={isLoading}
-      />
-      <ImageGraph films={filmsList} />
-      <AppSnackbar
-        open={open}
-        setOpen={setOpen}
-        success={addSuccess}
-        title="default title"
-        subTitle="default subtitle"
-      />
+      <div className={styles.filmsHorseApp}>
+        <div className={styles.filmsHorseAppTitle}>
+          <Image
+            src="/assets/logos/logo.png"
+            width={500}
+            height={500}
+            alt="Picture of the author"
+            layout="responsive"
+          />
+        </div>
+        <AutoComplete
+          onInputValue={onInputValue}
+          onAddClick={onAddClick}
+          options={suggestions || []}
+          isLoadingSuggestions={isLoading}
+        />
+        <ImageGraph films={filmsList} />
+        <AppSnackbar
+          open={open}
+          setOpen={setOpen}
+          success={addSuccess}
+          title="default title"
+          subTitle="default subtitle"
+        />
+      </div>
     </ThemeProvider>
   );
 }

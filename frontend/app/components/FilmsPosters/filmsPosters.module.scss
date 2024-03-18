@@ -16,18 +16,23 @@
   &Year {
     color: rgb(225, 225, 201);
     font-weight: bold;
-    margin: 10px 0;
+    margin: 5px 0;
   }
 
   &Score {
-    color: rgb(220, 220, 21);
+    color: rgb(252, 252, 252);
     font-weight: bold;
-    margin: 10px 0;
+    margin: 10px 0 0;
     font-size: 14px;
+    background-color: rgb(50 50 50);
   }
 
   &Container {
     max-width: 60px;
     margin: auto;
+    border: solid 3px rgb(50 50 50);
+    border-radius: 5px;
+    height: 80px;
+    overflow: hidden;
   }
 }
