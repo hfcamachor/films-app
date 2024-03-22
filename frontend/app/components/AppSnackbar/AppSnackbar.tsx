@@ -26,7 +26,7 @@ export default function AppSnackbar({
   const nodeRef = useRef(null);
   const [exited, setExited] = useState(true);
 
-  const handleClose = (_: any, reason: SnackbarCloseReason) => {
+  const handleClose = (_?: any, reason?: SnackbarCloseReason) => {
     if (reason === "clickaway") {
       return;
     }
